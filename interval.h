@@ -7,7 +7,7 @@
 class interval {
   public:
     double min, max;
-    static const double infinity;
+    // static const double infinity;    //dont need this because we have included the limits header
 
     interval() : min(+infinity), max(-infinity) {} // Default interval is empty
 
