@@ -34,7 +34,7 @@ Once the project is built, you can run the programs and generate the output file
 - **Run `camera_gradient_v1` to produce `camera_gradient.ppm`:**
 
     ```bash
-    build/camera_gradient_v1 > camera_gradient.ppm
+    build/camera_gradient_v1 > vector_diagram/camera_gradient.ppm
     ```
 
 
@@ -82,16 +82,8 @@ This geometric interpretation directly relates to the algebra, making it an esse
 - **Run `raytraced_image_v2` to produce `raytraced.ppm`:**
 
     ```bash
-    build/raytraced_image_v2 > raytraced.ppm
+    build/raytraced_image_v2 > vector_diagram/raytraced.ppm
     ```
 
 Each command will execute the respective program and redirect the output to a PPM image file.
 
-## Viewing the Output
-
-The output of the programs are PPM image files (`camera_gradient.ppm` and `raytraced.ppm`). You can view these files using any image viewer that supports the PPM format, or you can convert them to another format using tools like ImageMagick:
-
-```bash
-# Example command to convert PPM to PNG using ImageMagick
-convert camera_gradient.ppm camera_gradient.png
-convert raytraced.ppm raytraced.png
