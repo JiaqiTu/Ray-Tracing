@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a ray tracing implementation that sets up a camera and renders a gradient background. The code is written in C++ and uses CMake as the build system.
+This project is a ray tracing implementation that sets up a camera, ray source and renders a picture based on the camera's location. The code is written in C++ and uses CMake as the build system.
 
 ## Build Instructions
 

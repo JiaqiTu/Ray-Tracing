@@ -1,8 +1,8 @@
 #include <iostream>
+#include "raytracing.h"
 #include "color.h"
 #include "vec3.h"
 #include "ray.h"
-#include "raytracing.h"
 #include "hittable_list.h"
 #include "sphere.h"
 #include "hittable.h"

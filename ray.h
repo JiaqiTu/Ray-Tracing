@@ -2,6 +2,7 @@
 #define RAY_H
 
 #include "vec3.h"
+#include "raytracing.h"
 
 class ray {
   public:

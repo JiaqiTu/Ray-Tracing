@@ -3,6 +3,7 @@
 
 #include "hittable.h"
 #include "raytracing.h"
+#include "ray.h"
 
 class camera {
   public:
@@ -107,20 +108,40 @@ class camera {
     //     return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
     // }
 
-    hit_record rec;
-    // if (world.hit(r, 0, infinity, rec)) {
-    if (world.hit(r, interval(0, infinity), rec)) {
+        hit_record rec;
+        // if (world.hit(r, 0, infinity, rec)) {
+        if (world.hit(r, interval(0, infinity), rec)) {
 
-        return 0.5 * (rec.normal + color(1,1,1));
-    }
+            // return 0.5 * (rec.normal + color(1,1,1));
+
+            // vec3 direction = random_on_hemisphere(rec.normal);
+            vec3 direction = rec.normal + random_unit_vector();
+            return 0.5 * ray_color(ray(rec.p, direction), world);
+        }
 
 
-    vec3 unit_direction = unit_vector(r.direction());
-    auto a = 0.5*(unit_direction.y() + 1.0); 
-    // Scale y to [0,1]. 0 means ray is pointing straight down.
-    return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
-    //color white, weighted by (1.0 - a); color blue, weighted by a.
+        vec3 unit_direction = unit_vector(r.direction());
+        auto a = 0.5*(unit_direction.y() + 1.0); 
+        // Scale y to [0,1]. 0 means ray is pointing straight down.
+        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+        //color white, weighted by (1.0 - a); color blue, weighted by a.
 }
+    // color ray_color(const ray& r, int depth, const hittable& world) const {
+    //     // If we've exceeded the ray bounce limit, no more light is gathered.
+    //     if (depth <= 0)
+    //         return color(0,0,0);
+
+    //     hit_record rec;
+
+    //     if (world.hit(r, interval(0.001, infinity), rec)) {
+    //         vec3 direction = rec.normal + random_unit_vector();
+    //         return 0.1 * ray_color(ray(rec.p, direction), depth-1, world);
+    //     }
+
+    //     vec3 unit_direction = unit_vector(r.direction());
+    //     auto a = 0.5*(unit_direction.y() + 1.0);
+    //     return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+    // }
 };
 
 #endif
