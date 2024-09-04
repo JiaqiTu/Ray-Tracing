@@ -4,6 +4,8 @@
 #include "hittable.h"
 #include "raytracing.h"
 #include "ray.h"
+#include "material.h"
+
 
 class camera {
   public:
@@ -11,6 +13,8 @@ class camera {
     double aspect_ratio = 1.0;  // Ratio of image width over height
     int    image_width  = 100;  // Rendered image width in pixel count
     int    samples_per_pixel = 10;   // Count of random samples for each pixel
+    int    max_depth         = 10;   // Maximum number of ray bounces into scene
+
 
 
     void render(const hittable& world) {
@@ -30,7 +34,9 @@ class camera {
                 color pixel_color(0, 0, 0);
                 for (int sample = 0; sample < samples_per_pixel; sample++) {
                     ray r = get_ray(i, j);
-                    pixel_color += ray_color(r, world);
+                    // pixel_color += ray_color(r, world);
+                    pixel_color += ray_color(r, max_depth, world);
+
                 }
                 write_color(std::cout, pixel_samples_scale * pixel_color);
 
@@ -110,13 +116,16 @@ class camera {
 
         hit_record rec;
         // if (world.hit(r, 0, infinity, rec)) {
-        if (world.hit(r, interval(0, infinity), rec)) {
+        if (world.hit(r, interval(0.00001, infinity), rec)) {
 
             // return 0.5 * (rec.normal + color(1,1,1));
 
-            // vec3 direction = random_on_hemisphere(rec.normal);
-            vec3 direction = rec.normal + random_unit_vector();
+            // vec3 direction = random_on_hemisphere(rec.normal); //random
+            vec3 direction = rec.normal + random_unit_vector(); // lambertian
             return 0.5 * ray_color(ray(rec.p, direction), world);
+
+    
+
         }
 
 
@@ -126,22 +135,25 @@ class camera {
         return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
         //color white, weighted by (1.0 - a); color blue, weighted by a.
 }
-    // color ray_color(const ray& r, int depth, const hittable& world) const {
-    //     // If we've exceeded the ray bounce limit, no more light is gathered.
-    //     if (depth <= 0)
-    //         return color(0,0,0);
+    color ray_color(const ray& r, int depth, const hittable& world) const {
+        // If we've exceeded the ray bounce limit, no more light is gathered.
+        if (depth <= 0)
+            return color(0,0,0);
 
-    //     hit_record rec;
+        hit_record rec;
 
-    //     if (world.hit(r, interval(0.001, infinity), rec)) {
-    //         vec3 direction = rec.normal + random_unit_vector();
-    //         return 0.1 * ray_color(ray(rec.p, direction), depth-1, world);
-    //     }
+        if (world.hit(r, interval(0.001, infinity), rec)) {
+            ray scattered;
+            color attenuation;
+            if (rec.mat->scatter(r, rec, attenuation, scattered))
+                return attenuation * ray_color(scattered, depth-1, world);
+            return color(0,0,0);
+        }
 
-    //     vec3 unit_direction = unit_vector(r.direction());
-    //     auto a = 0.5*(unit_direction.y() + 1.0);
-    //     return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
-    // }
+        vec3 unit_direction = unit_vector(r.direction());
+        auto a = 0.5*(unit_direction.y() + 1.0);
+        return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+    }
 };
 
 #endif

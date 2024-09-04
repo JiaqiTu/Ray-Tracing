@@ -6,7 +6,9 @@
 
 class sphere : public hittable {
   public:
-    sphere(const point3& center, double radius) : center(center), radius(std::fmax(0,radius)) {}
+    // sphere(const point3& center, double radius) : center(center), radius(std::fmax(0,radius)) {}
+    sphere(const point3& center, double radius, shared_ptr<material> mat)
+      : center(center), radius(std::fmax(0,radius)), mat(mat) {}
 
     // bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
     bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
@@ -40,6 +42,8 @@ class sphere : public hittable {
             //rec.p - center: This calculates a vector that points from the center of the sphere to the point of intersection (rec.p). 
             //The direction of this vector is from the center of the sphere outward toward the surface where the intersection occurs.
         rec.set_face_normal(r, outward_normal);
+        rec.mat = mat;
+
 
         return true;
     }
@@ -47,6 +51,8 @@ class sphere : public hittable {
   private:
     point3 center;
     double radius;
+    shared_ptr<material> mat;
+
 };
 
 #endif
