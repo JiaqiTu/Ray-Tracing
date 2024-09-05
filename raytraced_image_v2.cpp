@@ -70,9 +70,15 @@ int main() {
     cam.max_depth         = 50;
 
     cam.vfov = 20;
+    //add position feature
     cam.lookfrom = point3(-2,2,1);
     cam.lookat   = point3(0,0,-1);
     cam.vup      = vec3(0,1,0);
+
+    // depth feature
+    cam.defocus_angle = 10.0;
+    cam.focus_dist    = 3.4;
+    
 
     // Render
     cam.render(world);
