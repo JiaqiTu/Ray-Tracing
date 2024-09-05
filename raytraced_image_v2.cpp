@@ -9,23 +9,6 @@
 #include "hittable.h"
 #include "camera.h"
 
-// using hittable obj in the ray_color function to achieve the same result as hit_sphere function
-
-// double hit_sphere(const point3& center, double radius, const ray& r) {
-//     vec3 oc = center - r.origin();
-//     auto a = dot(r.direction(), r.direction());
-//     auto b = -2.0 * dot(r.direction(), oc);
-//     auto c = dot(oc, oc) - radius*radius;
-//     auto discriminant = b*b - 4*a*c;
-//     // -x- placing a small sphere at −1 on the z-axis and then coloring red
-    
-//     if (discriminant < 0) {
-//         return -1.0;
-//     } else {
-//         return (-b - std::sqrt(discriminant) ) / (2.0*a);
-//     }
-// }       
-
 
 
 int main() {
@@ -37,7 +20,7 @@ int main() {
     hittable_list world;
 
 
-    // // World + Material
+    // World + Material
     // auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
     // auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
     // // auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8),0.3);
